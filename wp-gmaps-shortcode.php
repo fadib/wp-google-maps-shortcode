@@ -9,6 +9,45 @@ Author URI: http://fadib.net
 Contributors: fahmiadib
 */
 
+function wp_gmaps_shortcode( $atts ) {
+	$atts = shortcode_atts( array(
+		'api_key' 		=> false,
+		'address' 		=> false,
+		'lat' 			=> false,
+		'lng' 			=> false,
+		'zoom' 			=> '10',
+		'height'		=> '350px',
+		'width'			=> '350px',
+	), $atts );
+	
+	wp_print_scripts( 'wp-gmaps-api' );
+	
+	$map_id = uniqid( 'wp_gmaps_' );
+
+	ob_start(); ?>
+	<div class="wp_gmaps_canvas" id="<?php echo esc_attr( $map_id ); ?>" style="height: <?php echo esc_attr( $atts['height'] ); ?>; width: <?php echo esc_attr( $atts['width'] ); ?>"></div>
+    <script type="text/javascript">
+		var map_<?php echo $map_id; ?>;
+		function wp_gmaps_<?php echo $map_id ; ?>() {
+			var location = new google.maps.LatLng("<?php echo esc_attr( $atts['lat'] ); ?>", "<?php echo esc_attr( $atts['lng'] ); ?>");
+			var map_options = {
+				zoom: <?php echo $atts['zoom'] ?>,
+				center: location,
+				mapTypeId: google.maps.MapTypeId.ROADMAP
+			}
+			map_<?php echo $map_id; ?> = new google.maps.Map(document.getElementById("<?php echo $map_id; ?>"), map_options);
+			var marker = new google.maps.Marker({
+				position: location,
+				map: map_<?php echo $map_id; ?>
+			});
+		}
+		wp_gmaps_<?php echo $map_id; ?>();
+	</script>
+	<?php
+	
+	return ob_get_clean();
+}
+add_shortcode( 'wp_gmaps', 'wp_gmaps_shortcode' );
 
 /**
  * Loads Google Map API
