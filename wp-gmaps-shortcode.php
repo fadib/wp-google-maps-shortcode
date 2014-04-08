@@ -11,24 +11,28 @@ Contributors: fahmiadib
 
 function wp_gmaps_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
-		'api_key' 		=> false,
-		'address' 		=> false,
-		'lat' 			=> false,
-		'lng' 			=> false,
-		'zoom' 			=> '10',
-		'height'		=> '350px',
-		'width'			=> '350px',
+		'api_key' 	=> false,
+		'address' 	=> false,
+		'lat' 		=> false,
+		'lng' 		=> false,
+		'zoom' 		=> '10',
+		'height'    => '350px',
+		'width'		=> '350px',
+		'm'			=> "true",
 	), $atts );
 	
 	wp_print_scripts( 'wp-gmaps-api' );
 	
 	$map_id = uniqid( 'wp_gmaps_' );
+	
+	// show marker or not
+	$atts['m'] = $atts['m'] === 'false' ? false : true;
 
 	ob_start(); ?>
 	<div class="wp_gmaps_canvas" id="<?php echo esc_attr( $map_id ); ?>" style="height: <?php echo esc_attr( $atts['height'] ); ?>; width: <?php echo esc_attr( $atts['width'] ); ?>"></div>
     <script type="text/javascript">
 		var map_<?php echo $map_id; ?>;
-		function wp_gmaps_<?php echo $map_id ; ?>() {
+		function wp_gmaps_<?php echo $map_id; ?>() {
 			var location = new google.maps.LatLng("<?php echo esc_attr( $atts['lat'] ); ?>", "<?php echo esc_attr( $atts['lng'] ); ?>");
 			var map_options = {
 				zoom: <?php echo $atts['zoom'] ?>,
@@ -36,10 +40,12 @@ function wp_gmaps_shortcode( $atts ) {
 				mapTypeId: google.maps.MapTypeId.ROADMAP
 			}
 			map_<?php echo $map_id; ?> = new google.maps.Map(document.getElementById("<?php echo $map_id; ?>"), map_options);
+			<?php if ( $atts['m'] ): ?>
 			var marker = new google.maps.Marker({
 				position: location,
 				map: map_<?php echo $map_id; ?>
 			});
+			<?php endif; ?>
 		}
 		wp_gmaps_<?php echo $map_id; ?>();
 	</script>
