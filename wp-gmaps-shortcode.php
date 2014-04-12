@@ -18,7 +18,7 @@ function wp_gmaps_shortcode( $atts ) {
 		'zoom' 		=> '10',
 		'height'    => '350px',
 		'width'		=> '350px',
-		'marker'	=> "true",
+		'marker'    => 1,
 	), $atts );
 	
 	wp_print_scripts( 'wp-gmaps-api' );
