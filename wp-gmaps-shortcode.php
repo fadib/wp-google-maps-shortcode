@@ -18,7 +18,7 @@ function wp_gmaps_shortcode( $atts ) {
 		'zoom' 		=> '10',
 		'height'    => '350px',
 		'width'		=> '350px',
-		'm'			=> "true",
+		'marker'	=> "true",
 	), $atts );
 	
 	wp_print_scripts( 'wp-gmaps-api' );
@@ -43,7 +43,7 @@ function wp_gmaps_shortcode( $atts ) {
 			}
 			map_<?php echo $map_id; ?> = new google.maps.Map(document.getElementById("<?php echo $map_id; ?>"), map_options);
 			
-			<?php if ( $atts['m'] ): ?>
+			<?php if ( $atts['marker'] ): ?>
 			marker_<?php echo $map_id ?> = new google.maps.Marker({
 				position: location,
 				map: map_<?php echo $map_id; ?>
