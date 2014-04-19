@@ -1,8 +1,8 @@
 <?php
 /*
 Plugin Name: WP Google Maps Shortcode
-Plugin URL: http://fadib.net/wp-google-maps-shortcod
-Description: Insert Google Maps into your post/page using Shortcodee
+Plugin URL: http://fadib.net/wp-google-maps-shortcode
+Description: Insert Google Maps into your post/page using Shortcode
 Version: 1.0
 Author: Fahmi Adib
 Author URI: http://fadib.net
@@ -26,7 +26,7 @@ function wp_gmaps_shortcode( $atts ) {
 	$map_id = uniqid( 'wp_gmaps_' );
 	
 	// show marker or not
-	$atts['m'] = $atts['m'] === 'false' ? false : true;
+	$atts['marker'] = (int) $atts['marker'] ? true : false;
 
 	ob_start(); ?>
 	<div class="wp_gmaps_canvas" id="<?php echo esc_attr( $map_id ); ?>" style="height: <?php echo esc_attr( $atts['height'] ); ?>; width: <?php echo esc_attr( $atts['width'] ); ?>"></div>
