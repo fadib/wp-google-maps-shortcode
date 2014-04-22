@@ -2,7 +2,7 @@
 /*
 Plugin Name: WP Google Maps Shortcode
 Plugin URL: http://fadib.net/wp-google-maps-shortcode
-Description: Insert Google Maps into your post/page using Shortcode
+Description: Insert Google Maps into your post or page using Shortcode
 Version: 1.0
 Author: Fahmi Adib
 Author URI: http://fadib.net
@@ -11,14 +11,15 @@ Contributors: fahmiadib
 
 function wp_gmaps_shortcode( $atts ) {
 	$atts = shortcode_atts( array(
-		'api_key' 	=> false,
-		'address' 	=> false,
-		'lat' 		=> false,
-		'lng' 		=> false,
-		'zoom' 		=> '10',
-		'height'    => '350px',
-		'width'		=> '350px',
-		'marker'    => 1,
+		'api_key' 		=> false,
+		'address' 		=> false,
+		'lat' 			=> false,
+		'lng' 			=> false,
+		'zoom' 			=> '10',
+		'height'    	=> '350px',
+		'width'			=> '350px',
+		'marker'    	=> 0,
+		'infowindow'	=> false,
 	), $atts );
 	
 	wp_print_scripts( 'wp-gmaps-api' );
@@ -33,6 +34,7 @@ function wp_gmaps_shortcode( $atts ) {
     <script type="text/javascript">
 		var map_<?php echo $map_id; ?>;
 		var marker_<?php echo $map_id; ?>;
+		var infowindow_<?php echo $map_id; ?>;
 		var geocoder = new google.maps.Geocoder();
 		function wp_gmaps_<?php echo $map_id; ?>() {
 			var location = new google.maps.LatLng("<?php echo esc_attr( $atts['lat'] ); ?>", "<?php echo esc_attr( $atts['lng'] ); ?>");
@@ -48,6 +50,16 @@ function wp_gmaps_shortcode( $atts ) {
 				position: location,
 				map: map_<?php echo $map_id; ?>
 			});
+			
+				<?php if ( $atts['infowindow'] ): ?>
+				infowindow_<?php echo $map_id; ?> = new google.maps.InfoWindow({
+					content: '<?php echo esc_attr( $atts['infowindow'] ) ?>'
+				});
+				google.maps.event.addListener(marker_<?php echo $map_id ?>, 'click', function() {
+					infowindow_<?php echo $map_id; ?>.open(map_<?php echo $map_id; ?>, marker_<?php echo $map_id ?>);
+				});
+				<?php endif; ?>
+			
 			<?php endif; ?>
 			
 			<?php if ( $atts['address'] ): ?>
