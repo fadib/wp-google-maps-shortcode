@@ -3,7 +3,7 @@
 Plugin Name: WP Google Maps Shortcode
 Plugin URL: http://fahmiadib.wordpress.com/wp-google-maps-shortcode
 Description: Insert Google Maps into your post or page using Shortcode
-Version: 1.1a
+Version: 1.1b
 Author: Fahmi Adib
 Author URI: http://fahmiadib.wordpress.com
 Contributors: fahmiadib
