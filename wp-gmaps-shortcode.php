@@ -146,6 +146,6 @@ function wp_gmaps_decode_address( $address ) {
  * @return      void
  */
 function wp_gmaps_load_scripts() {
-	wp_register_script( 'wp-gmaps-api', '//maps.google.com/maps/api/js?sensor=false' );
+	wp_register_script( 'wp-gmaps-api', '//maps.google.com/maps/api/js' );
 }
 add_action( 'wp_enqueue_scripts', 'wp_gmaps_load_scripts' );
