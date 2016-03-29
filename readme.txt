@@ -19,15 +19,18 @@ Maps are displayed with the [wp_gmaps] short code:
 
 `[wp_gmaps address="San Francisco, California" zoom="7" marker="1"]`
 
+* Fully Responsive
 * Support geocoding service
 * Support latitude and longitude parameters
 * Support zoom
+* Ability to disable scrollwheel
 * Enable/Disable marker
 
 == Installation ==
 
 1. Activate the plugin
 2. Add [wp_gmaps address="your address here"] or [wp_gmaps lat="your latitude" lng="your longitude"] to any post or page
+3. To add your Google API Key, you need to define a constant in your theme's functions.php `define( 'WP_GMAPS_GOOGLE_API_KEY', 'XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX' );`. See <a href="https://developers.google.com/maps/documentation/javascript/get-api-key">Obtaining an API key</a>.
 
 == Changelog ==
 
