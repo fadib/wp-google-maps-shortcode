@@ -50,7 +50,7 @@ function wp_gmaps_shortcode( $atts ) {
 				zoom: <?php echo esc_attr( $atts['zoom'] ) ?>,
 				center: location,
 				mapTypeId: google.maps.MapTypeId.ROADMAP
-			}
+			};
 			map_<?php echo $map_id; ?> = new google.maps.Map(document.getElementById("<?php echo $map_id; ?>"), map_options);
 			
 			<?php if ( $atts['marker'] ): ?>
