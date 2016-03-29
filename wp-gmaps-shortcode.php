@@ -6,7 +6,7 @@ Description: Insert Google Maps into your post or page using Shortcode
 Version: 1.1b
 Author: Fahmi Adib
 Author URI: http://fahmiadib.wordpress.com
-Contributors: fahmiadib
+Contributors: fahmiadib, siamkreative
 */
 
 function wp_gmaps_shortcode( $atts ) {
@@ -20,6 +20,9 @@ function wp_gmaps_shortcode( $atts ) {
 		'width'			=> '350px',
 		'marker'    	=> 0,
 		'infowindow'	=> false,
+		'responsive'    => true,
+		'aspectratio'   => 60,
+		'scrollwheel'   => true
 	), $atts );
 	
 	wp_print_scripts( 'wp-gmaps-api' );
@@ -38,7 +41,10 @@ function wp_gmaps_shortcode( $atts ) {
 	$atts['marker'] = (int) $atts['marker'] ? true : false;
 
 	ob_start(); ?>
-	<div class="wp_gmaps_canvas" id="<?php echo esc_attr( $map_id ); ?>" style="height: <?php echo esc_attr( $atts['height'] ); ?>; width: <?php echo esc_attr( $atts['width'] ); ?>"></div>
+	<?php if( (bool)$atts['responsive'] === true ): ?>
+		<style type="text/css" media="screen">.wp_gmaps_wrapper{position:relative;padding-bottom:<?php echo esc_attr( $atts['aspectratio'] ); ?>%;height:0;overflow:hidden}.wp_gmaps_wrapper>.wp_gmaps_canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}</style>
+	<?php endif; ?>
+	<div class="wp_gmaps_wrapper"><div class="wp_gmaps_canvas" id="<?php echo esc_attr( $map_id ); ?>" style="height: <?php echo esc_attr( $atts['height'] ); ?>; width: <?php echo esc_attr( $atts['width'] ); ?>"></div></div>
     <script type="text/javascript">
 		var map_<?php echo $map_id; ?>;
 		var marker_<?php echo $map_id; ?>;
@@ -49,8 +55,9 @@ function wp_gmaps_shortcode( $atts ) {
 			var map_options = {
 				zoom: <?php echo esc_attr( $atts['zoom'] ) ?>,
 				center: location,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
-			}
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				scrollwheel: <?php echo esc_attr( $atts['scrollwheel'] ); ?> //  The string "0" is interpreted as false by JavaScript and "1" is interpreted as true, so you can simply work with the string value as a boolean.
+			};
 			map_<?php echo $map_id; ?> = new google.maps.Map(document.getElementById("<?php echo $map_id; ?>"), map_options);
 			
 			<?php if ( $atts['marker'] ): ?>
@@ -92,7 +99,7 @@ function wp_gmaps_decode_address( $address ) {
 	
 	if ( false === $coordinates ) {
 		$args = array( 'address' => urlencode( $address ) );
-		$url = add_query_arg( $args, 'http://maps.googleapis.com/maps/api/geocode/json' );
+		$url = esc_url( add_query_arg( $args, '//maps.googleapis.com/maps/api/geocode/json' ) );
      	$response = wp_remote_get( $url );
 		
      	if ( is_wp_error( $response ) )
@@ -139,6 +146,11 @@ function wp_gmaps_decode_address( $address ) {
  * @return      void
  */
 function wp_gmaps_load_scripts() {
-	wp_register_script( 'wp-gmaps-api', '//maps.google.com/maps/api/js?sensor=false' );
+	$endpoint = '//maps.google.com/maps/api/js';
+	$google_api_key = defined('WP_GMAPS_GOOGLE_API_KEY') ? trim(WP_GMAPS_GOOGLE_API_KEY) : '';
+	if ( !empty($google_api_key) ) {
+		$endpoint = add_query_arg( 'key', $google_api_key, $endpoint );
+	}
+	wp_register_script( 'wp-gmaps-api', $endpoint );
 }
 add_action( 'wp_enqueue_scripts', 'wp_gmaps_load_scripts' );
