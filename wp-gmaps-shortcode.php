@@ -92,7 +92,7 @@ function wp_gmaps_decode_address( $address ) {
 	
 	if ( false === $coordinates ) {
 		$args = array( 'address' => urlencode( $address ) );
-		$url = add_query_arg( $args, 'http://maps.googleapis.com/maps/api/geocode/json' );
+		$url = esc_url( add_query_arg( $args, '//maps.googleapis.com/maps/api/geocode/json' ) );
      	$response = wp_remote_get( $url );
 		
      	if ( is_wp_error( $response ) )
