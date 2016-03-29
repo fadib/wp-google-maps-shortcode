@@ -146,6 +146,11 @@ function wp_gmaps_decode_address( $address ) {
  * @return      void
  */
 function wp_gmaps_load_scripts() {
-	wp_register_script( 'wp-gmaps-api', '//maps.google.com/maps/api/js' );
+	$endpoint = '//maps.google.com/maps/api/js';
+	$google_api_key = defined('WP_GMAPS_GOOGLE_API_KEY') ? trim(WP_GMAPS_GOOGLE_API_KEY) : '';
+	if ( !empty($google_api_key) ) {
+		$endpoint = add_query_arg( 'key', $google_api_key, $endpoint );
+	}
+	wp_register_script( 'wp-gmaps-api', $endpoint );
 }
 add_action( 'wp_enqueue_scripts', 'wp_gmaps_load_scripts' );
