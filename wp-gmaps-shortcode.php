@@ -20,6 +20,7 @@ function wp_gmaps_shortcode( $atts ) {
 		'width'			=> '350px',
 		'marker'    	=> 0,
 		'infowindow'	=> false,
+		'responsive'    => true,
 		'aspectratio'   => 60
 	), $atts );
 	
@@ -39,7 +40,9 @@ function wp_gmaps_shortcode( $atts ) {
 	$atts['marker'] = (int) $atts['marker'] ? true : false;
 
 	ob_start(); ?>
-	<style type="text/css" media="screen">.wp_gmaps_wrapper{position:relative;padding-bottom:<?php echo esc_attr( $atts['aspectratio'] ); ?>%;height:0;overflow:hidden}.wp_gmaps_wrapper>.wp_gmaps_canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}</style>
+	<?php if( (bool)$atts['responsive'] === true ): ?>
+		<style type="text/css" media="screen">.wp_gmaps_wrapper{position:relative;padding-bottom:<?php echo esc_attr( $atts['aspectratio'] ); ?>%;height:0;overflow:hidden}.wp_gmaps_wrapper>.wp_gmaps_canvas{position:absolute;top:0;left:0;width:100%!important;height:100%!important}</style>
+	<?php endif; ?>
 	<div class="wp_gmaps_wrapper"><div class="wp_gmaps_canvas" id="<?php echo esc_attr( $map_id ); ?>" style="height: <?php echo esc_attr( $atts['height'] ); ?>; width: <?php echo esc_attr( $atts['width'] ); ?>"></div></div>
     <script type="text/javascript">
 		var map_<?php echo $map_id; ?>;
