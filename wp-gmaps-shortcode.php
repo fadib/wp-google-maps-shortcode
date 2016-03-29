@@ -21,7 +21,8 @@ function wp_gmaps_shortcode( $atts ) {
 		'marker'    	=> 0,
 		'infowindow'	=> false,
 		'responsive'    => true,
-		'aspectratio'   => 60
+		'aspectratio'   => 60,
+		'scrollwheel'   => true
 	), $atts );
 	
 	wp_print_scripts( 'wp-gmaps-api' );
@@ -54,7 +55,8 @@ function wp_gmaps_shortcode( $atts ) {
 			var map_options = {
 				zoom: <?php echo esc_attr( $atts['zoom'] ) ?>,
 				center: location,
-				mapTypeId: google.maps.MapTypeId.ROADMAP
+				mapTypeId: google.maps.MapTypeId.ROADMAP,
+				scrollwheel: <?php echo esc_attr( $atts['scrollwheel'] ); ?> //  The string "0" is interpreted as false by JavaScript and "1" is interpreted as true, so you can simply work with the string value as a boolean.
 			};
 			map_<?php echo $map_id; ?> = new google.maps.Map(document.getElementById("<?php echo $map_id; ?>"), map_options);
 			
