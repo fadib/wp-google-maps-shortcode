@@ -21,8 +21,10 @@ function wp_gmaps_shortcode( $atts ) {
 		'marker'    	=> 0,
 		'infowindow'	=> false,
 	), $atts );
-	
-	wp_print_scripts( 'wp-gmaps-api' );
+
+	if (!$atts['api_key']) {
+        wp_print_scripts( 'wp-gmaps-api' );
+    }
 	
 	if ( $atts['address'] ) {
 		$coordinates = wp_gmaps_decode_address( $atts['address'] );
@@ -39,6 +41,11 @@ function wp_gmaps_shortcode( $atts ) {
 
 	ob_start(); ?>
 	<div class="wp_gmaps_canvas" id="<?php echo esc_attr( $map_id ); ?>" style="height: <?php echo esc_attr( $atts['height'] ); ?>; width: <?php echo esc_attr( $atts['width'] ); ?>"></div>
+
+    <?php if($atts['api_key']): ?>
+        <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $atts['api-key'] ?>"type="text/javascript"></script>
+    <?php endif; ?>
+
     <script type="text/javascript">
 		var map_<?php echo $map_id; ?>;
 		var marker_<?php echo $map_id; ?>;
