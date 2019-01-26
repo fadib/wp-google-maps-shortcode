@@ -43,7 +43,7 @@ function wp_gmaps_shortcode( $atts ) {
 	<div class="wp_gmaps_canvas" id="<?php echo esc_attr( $map_id ); ?>" style="height: <?php echo esc_attr( $atts['height'] ); ?>; width: <?php echo esc_attr( $atts['width'] ); ?>"></div>
 
     <?php if($atts['api_key']): ?>
-        <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $atts['api-key'] ?>"type="text/javascript"></script>
+        <script src="https://maps.googleapis.com/maps/api/js?key=<?php echo $atts['api_key'] ?>"type="text/javascript"></script>
     <?php endif; ?>
 
     <script type="text/javascript">
