@@ -11,6 +11,11 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Insert Google Maps into your post or page using Shortcode
 
+## Please define google map api key in theme function file
+```PHP
+define('gg_map_api_key', '__KEY__');
+```
+
 == Description ==
 
 **WP Google Maps Shortcode** - Insert Google Maps into your post or page using Shortcode.
