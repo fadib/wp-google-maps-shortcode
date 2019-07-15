@@ -1,12 +1,21 @@
-=== WP Google Maps Shortcode ===
+# === WP Google Maps Shortcode ===
+
 Author URI: https://github.com/frankent/wp-google-maps-shortcode
+
 Plugin URI: http://fahmiadib.wordpress.com/wp-google-maps-shortcode/
+
 Contributors: fahmiadib, frankent
+
 Tags: gmaps, google maps, short code, maps
+
 Requires at least: 3.5
+
 Tested up to: 5.2.2
+
 Stable tag: 1.3
+
 License: GPLv2 or later
+
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
 Insert Google Maps into your post or page using Shortcode
