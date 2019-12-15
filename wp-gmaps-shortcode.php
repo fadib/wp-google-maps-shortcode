@@ -1,17 +1,18 @@
 <?php
 /*
 Plugin Name: WP Google Maps Shortcode
-Plugin URL: http://fahmiadib.wordpress.com/wp-google-maps-shortcode
+Plugin URL: http://trycatch.in.th
 Description: Insert Google Maps into your post or page using Shortcode
-Version: 1.1b
+Version: 1.4
 Author: Fahmi Adib
 Author URI: http://fahmiadib.wordpress.com
-Contributors: fahmiadib
+Contributors: fahmiadib, frankent
 */
 
 function wp_gmaps_shortcode( $atts ) {
+
 	$atts = shortcode_atts( array(
-		'api_key' 		=> false,
+		'api_key' 		=> defined('gg_map_api_key') ? gg_map_api_key : false,
 		'address' 		=> false,
 		'lat' 			=> false,
 		'lng' 			=> false,
@@ -21,8 +22,13 @@ function wp_gmaps_shortcode( $atts ) {
 		'marker'    	=> 0,
 		'infowindow'	=> false,
 	), $atts );
-	
-	wp_print_scripts( 'wp-gmaps-api' );
+
+	if (!$atts['api_key']) {
+        wp_print_scripts( 'wp-gmaps-api' );
+        ?>
+        <script>alert('Please check plugin config')</script>
+        <?php
+    }
 	
 	if ( $atts['address'] ) {
 		$coordinates = wp_gmaps_decode_address( $atts['address'] );
@@ -39,6 +45,7 @@ function wp_gmaps_shortcode( $atts ) {
 
 	ob_start(); ?>
 	<div class="wp_gmaps_canvas" id="<?php echo esc_attr( $map_id ); ?>" style="height: <?php echo esc_attr( $atts['height'] ); ?>; width: <?php echo esc_attr( $atts['width'] ); ?>"></div>
+
     <script type="text/javascript">
 		var map_<?php echo $map_id; ?>;
 		var marker_<?php echo $map_id; ?>;
@@ -141,4 +148,12 @@ function wp_gmaps_decode_address( $address ) {
 function wp_gmaps_load_scripts() {
 	wp_register_script( 'wp-gmaps-api', '//maps.google.com/maps/api/js?sensor=false' );
 }
+
+function hook_google_script() {
+    $default_api_key = defined('gg_map_api_key') ? gg_map_api_key : false;
+    echo "<script src=\"https://maps.googleapis.com/maps/api/js?key={$default_api_key}\"type=\"text/javascript\"></script>";
+}
+
 add_action( 'wp_enqueue_scripts', 'wp_gmaps_load_scripts' );
+
+add_action( 'wp_head', 'hook_google_script' );
